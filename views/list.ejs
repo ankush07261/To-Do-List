@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>todolist</title>
-    <link type="text/css" rel="stylesheet" href="../css/styles.css"
+    <link type="text/css" rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
     <div class="box" id="heading">
@@ -15,7 +15,7 @@
     <div class="box">
         <% for(var i=0; i < newlistitems.length; i++) { %>
             <div class="item">
-                <input type="checkbox">
+                <input type="checkbox" name="newlist">
                 <p>
                     <%= newlistitems[i] %>
                 </>
@@ -25,12 +25,14 @@
         <form method="post" action="\" class="item">
         
             <input type="text" name="newitem" placeholder="New Item" autocomplete="off">
-            <button type="submit" name="list" value= <%= listTitle %>+</button>
+            <button type="submit" name="list" value= <%= listTitle %><p>+</p></button>
         
         </form>
     </div>
     
-    
+    <footer>
+        <P>made by Ankush Hegde</P>
+    </footer>
 
   
 </body>
