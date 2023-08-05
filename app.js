@@ -2,12 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 let item = "";
 let items = [];
-let workItems = [];
-
+let i = 0;
 const app = express();
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static("public"))
+
 app.get('/', function (req, res) {
     
     let today = new Date();
@@ -48,20 +48,10 @@ app.get('/', function (req, res) {
     res.render('list', { listTitle: day , newlistitems:items});
 });
 
-app.get("/work", function (req, res) {
-    res.render('list', { listTitle:"workList", newListitems:workItems});
-})
-
 app.post("/", function (req, res) {
-    item = req.body.list;
+    item = req.body.newlist;
     items.push(item);
-    res.redirect("/")
-})
-
-app.post("/work", function (req, res) {
-    let item = req.body.newitem;
-    workItems.push(item);
-    res.redirect("/work");
+    res.redirect("/");
 })
 
 app.listen(3000, function () {
