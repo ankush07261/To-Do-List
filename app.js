@@ -1,71 +1,56 @@
+//importing modules
 const express = require('express');
 const bodyParser = require('body-parser');
-let item = "";
-let items = [];
+const mongoose = require('mongoose');
+const Item = require('./item.js')
 
+//connecting mongoose
+mongoose.connect('mongodb://127.0.0.1:27017/todoDB',{
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('Connected to todoDB')
+});
+
+//DECLARATIONS
 const app = express();
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static("public"))
 
-app.get('/', function (req, res) {
-    
+//METHODS
+app.get('/', async (req, res) =>{   
     let today = new Date();
-
     let options = {
         weekday: 'long',
         day: 'numeric',
         month: 'long'
     };
-
+    let itemName = await Item.find(req.params.item);
     let day = today.toLocaleDateString("en-US",options)
-    res.render('list.ejs', { listTitle: day, newlistitems: items });
+    res.render('list.ejs', { listTitle: day, newlistitems: itemName });
 });
 
 app.post("/", function (req, res) {
-    item = req.body.newitem;
-    items.push(item);
+    const itemName = req.body.newitem
+    const itemnew = new Item({
+        item: itemName
+    })
+    itemnew.save()
     res.redirect("/");
+})
+
+app.post("/delete", async(req, res) =>{
+    const checked = req.body.checkBox;
+    try {
+        await Item.findByIdAndRemove(checked);
+        res.redirect("/");
+        console.log("Item "+checked+" deleted successfully")
+    } catch (err) {
+        console.log(err);
+    }  
 })
 
 app.listen(3000, function () {
     console.log('listening on port 3000');
 });
-
-// app.get("/work", function (req, res) {
-//     res.render('list', { listTitle:"workList", newListitems:workItems});
-// })
-
-// let tday = today.getDay();
-    // let day = "";
-    // switch (tday) {
-    //     case 0: day = "sunday";
-    //         break;
-    //     case 1: day = "monday";
-    //         break;
-    //     case 2: day = "tuesday";
-    //         break;
-    //     case 3: day = "wednesday";
-    //         break;
-    //     case 4: day = "thurday";
-    //         break;
-    //     case 5: day = "friday";
-    //         break;
-    //     case 6: day = "saturday";
-    //         break;
-    //     default: 
-    //         console.log(tday);
-    // }
-    
-    // if (today.getDate() === 6 || today.getDate() === 7) {
-    //     day = " weekend";
-    // } else {
-    //     day = " weekday";
-    // }
-
-// app.post("/work", function (req, res) {
-//     let item = req.body.newitem;
-//     workItems.push(item);
-//     res.redirect("/work");
-// })
-
