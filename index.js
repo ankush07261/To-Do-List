@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const Item = require('./item.js')
 
 //connecting mongoose
-mongoose.connect('mongodb+srv://ankushhegde:cwjxgfy@cluster0.cwjxgfy.mongodb.net/?retryWrites=true&w=majority',{
+mongoose.connect('<mongoDB_url>',{
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
